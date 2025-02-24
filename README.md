@@ -10,17 +10,23 @@
 ---
 
 ### 2️⃣ 초기화  
-```sh terraform init ```
+```sh
+terraform init
+```
 
 ---
 
-3️⃣ 실행 계획 확인
-```sh terraform plan ```
+### 3️⃣ 실행 계획 확인
+```sh
+terraform plan
+```
 
 ---
 
-4️⃣ 인프라 적용
-```sh terraform apply ```
+### 4️⃣ 인프라 적용
+```sh
+terraform apply
+```
 
 ---
 
