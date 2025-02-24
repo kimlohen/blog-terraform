@@ -2,6 +2,11 @@
 
 이 프로젝트는 **Terraform을 이용해 블로그 인프라를 구축하는 코드**입니다.
 
+## 🌐 아키텍처  
+아래 다이어그램은 현재 블로그 인프라의 구성입니다.  
+
+![Blog Architecture](images/blog-architecture.png)
+
 ## 🚀 사용법
 
 ### 1️⃣ Terraform 설치  
