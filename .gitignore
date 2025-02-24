@@ -1,0 +1,16 @@
+# AWS 키 & 인증 정보
+*.pem
+*.key
+*.crt
+.aws/
+
+# Terraform 관련
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# IDE & OS 설정 파일
+.DS_Store
+.idea/
+.vscode/
+
