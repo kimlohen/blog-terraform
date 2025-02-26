@@ -1,5 +1,6 @@
 provider "aws" {
   region = var.aws_region  # 원하는 리전 설정 (서울 리전)
+  profile = "terraform-user"
 }
 
 ### VPC
