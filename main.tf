@@ -84,16 +84,18 @@ resource "aws_key_pair" "blog_key_pair" {
   public_key = file("~/.ssh/blog-key-pair.pub")  # 공개 키 파일 경로
 }
 
+## 블로그 EC2 생성
+
 # 보안 그룹 생성 (SSH와 HTTP 포트 열기)
 resource "aws_security_group" "blog_security_group" {
   vpc_id = aws_vpc.blog_prd_vpc.id
 
-#  ingress {
-#    from_port   = 20
-#    to_port     = 21
-#    protocol    = "tcp"
-#    cidr_blocks = ["0.0.0.0/0"]  # 모든 IP에서 SSH 접속 허용
-#  }
+# ingress {
+#  from_port   = 22
+#  to_port     = 22
+#  protocol    = "tcp"
+#  cidr_blocks = ["0.0.0.0/0"]  # 모든 IP에서 SSH 접속 허용
+# }
 
   ingress {
     from_port   = 22
@@ -164,6 +166,43 @@ resource "aws_route53_record" "blog_a_record" {
 }
 
 
+## Monitoring EC2 생성
+resource "aws_security_group" "monitoring_ec2_security_group" {
+  vpc_id = aws_vpc.blog_prd_vpc.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.my_ip]  # 내 IP에서 SSH 접속 허용
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"  # 모든 프로토콜 허용
+    cidr_blocks = ["0.0.0.0/0"]  # 모든 외부 연결 허용
+  }
+
+  tags = {
+    Name = "monitoring-prd-security-group"
+  }
+}
+
+# 퍼블릭 서브넷에 EC2 인스턴스 생성
+resource "aws_instance" "monitoring_instance" {
+  ami           = "ami-0ff178d403f71cc8e"  # Amazon Linux2 AMI ID
+  instance_type = "t4g.small"
+  subnet_id     = aws_subnet.public_subnet_1.id
+  key_name      = aws_key_pair.blog_key_pair.key_name
+
+  # 보안 그룹을 vpc_security_group_ids로 지정
+  vpc_security_group_ids = [aws_security_group.monitoring_ec2_security_group.id]
+
+  tags = {
+    Name = "blog-prd-ec2-instance"
+  }
+}
 
 ### RDS
 # RDS Subnet group
